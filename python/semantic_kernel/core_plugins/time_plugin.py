@@ -211,6 +211,26 @@ class TimePlugin(KernelBaseModel):
                 return d.strftime("%A, %d %B, %Y")
         raise FunctionExecutionException("day_name is not recognized")
 
+    @kernel_function(description="""Get the date of the next day matching the supplied week day name in English.""")
+    def date_matching_next_day_name(self, day_name: str) -> str:
+        """Get the date of the next day matching the supplied day name.
+
+        Args:
+            day_name: The day name to match with.
+
+        Returns:
+            The date of the matching day.
+
+        Example:
+             {{time.date_matching_next_day_name $input}} => Sunday, 14 May, 2023
+        """
+        d = datetime.date.today()
+        for i in range(1, 8):
+            d = d + datetime.timedelta(days=1)
+            if d.strftime("%A") == day_name:
+                return d.strftime("%A, %d %B, %Y")
+        raise FunctionExecutionException("day_name is not recognized")
+    
     @kernel_function(description="Get the seconds on the current minute")
     def second(self) -> str:
         """Get the seconds on the current minute.
